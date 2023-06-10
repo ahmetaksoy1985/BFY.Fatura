@@ -118,7 +118,7 @@ namespace fatu
         {
             try
             {
-                for (int i = 0; i < DataGridView1.RowCount ; i++)
+                for (int i = 0; i < DataGridView1.RowCount; i++)
                 {
                     string itemName = DataGridView1.Rows[i].Cells[0].Value.ToString();
                     int quantity = Convert.ToInt32(DataGridView1.Rows[i].Cells[1].Value.ToString());
@@ -143,7 +143,7 @@ namespace fatu
                     itemList.Add(item);
                 }
 
-              
+
 
 
                 var configuration = FaturaServiceConfigurationFactory.Create();
@@ -173,7 +173,7 @@ namespace fatu
                     grandTotalInclVAT = Convert.ToDecimal(vergilerDahilLabel.Text),
                     paymentTotal = Convert.ToDecimal(TextBox4.Text),
                 };
-               
+
                 var response = faturaService.CreateInvoiceAndGetHTML(nesne, false);
 
 
@@ -259,7 +259,7 @@ namespace fatu
             decimal toplam = 0;
             if (!string.IsNullOrEmpty(TextBox3.Text))
             {
-                decimal  kdvharic, kdvorani, miktar;
+                decimal kdvharic, kdvorani, miktar;
                 kdvharic = Convert.ToDecimal(TextBox3.Text);
                 kdvorani = Convert.ToDecimal(ComboBox2.Text);
                 miktar = Convert.ToDecimal(TextBox2.Text);
@@ -316,7 +316,7 @@ namespace fatu
 
         }
 
-     
+
 
         private async void button2_Click(object sender, EventArgs e)
         {
@@ -328,17 +328,20 @@ namespace fatu
             FaturaService faturaService = new(configuration);
             long taxId = long.Parse(vergikimlik.Text);
             await faturaService.GetToken();
-            var response = await faturaService.GetRecipientDataByTaxIDOrTRID(taxId);
-            if (response is GIBResponseModel)
+
+            GIBResponseModel<RecipientModel> response = await faturaService.GetRecipientDataByTaxIDOrTRID(taxId);
+
+            if (response is GIBResponseModel<RecipientModel>)
             {
                 RecipientModel recipient = response.data;
-                var unvan = recipient.unvan;
-                var adi = recipient.adi;
-                var soyadi = recipient.soyadi;
-                var vergiDairesi = recipient.vergiDairesi;
+                unvan.Text = recipient.unvan;
+                adi.Text = recipient.adi;
+                soyadi.Text = recipient.soyadi;
+                vergidairesi.Text = recipient.vergiDairesi;
+
             }
 
-          
+
 
 
             //if (response is GIBResponseModel)
